@@ -1,1 +1,14 @@
-Scripts for Recreating Migrated Shared Mailboxes Online Only
+Script for Recreating Migrated Shared Mailboxes to Online Only
+
+You must use the mailbox alias attribute when adding which mailboxes that need to be recreated.
+This script doesn't add back "send on behalf" so look it up before!
+Example: Get-exoMailbox -RecipientTypeDetails sharedmailbox -Properties GrantSendOnBehalfTo | select alias,GrantSendOnBehalfTo
+
+Make sure these values are on all the shared mailboxes that you want to recreate!
+This happens if first migrated as user and then converted to shared mailbox
+msExchRecipientDisplayType	-2147483642
+msExchRecipientTypeDetails	34359738368
+msExchRemoteRecipientType	100
+To update all mailboxes in a specific OU:
+get-aduser -Filter {msExchRemoteRecipientType -eq 4} -SearchBase "OU=Shared Mailboxes,OU=Exchange Resources,OU=Company,DC=Company,DC=com" | `
+set-aduser -Replace @{'msExchRemoteRecipientType'=100;'msExchRecipientDisplayType'=-2147483642;msExchRecipientTypeDetails=34359738368}

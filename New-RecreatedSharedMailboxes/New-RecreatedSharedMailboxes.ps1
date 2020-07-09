@@ -119,8 +119,12 @@ foreach ($Mailbox in $OldMailboxes) {
 
     Start-Sleep -seconds 60
     #Recreate the inactivemailbox
-    $NewMB = New-Mailbox -InactiveMailbox $ExchGUID -name $OldMBAlias -alias $OldMBAlias -displayname $OldMBDisplayname -MicrosoftOnlineServicesID $OldMBAlias@$OnlineDomain 
-
+    try {
+        $NewMB = New-Mailbox -InactiveMailbox $ExchGUID -name $OldMBAlias -alias $OldMBAlias -displayname $OldMBDisplayname -MicrosoftOnlineServicesID $OldMBAlias@$OnlineDomain 
+    }
+    catch {
+        Continue        
+    }
     Start-Sleep -seconds 60
 
     #CONVERT TO SHARED MAILBOX

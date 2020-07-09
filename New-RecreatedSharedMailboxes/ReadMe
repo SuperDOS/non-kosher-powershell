@@ -1,14 +1,20 @@
-Script for Recreating Migrated Shared Mailboxes to Online Only
+Make onprem migrated shared mailbox online only
 
+Make sure you connect to Msonline and MSExchangeOnline before running
 You must use the mailbox alias attribute when adding which mailboxes that need to be recreated.
-This script doesn't add back "send on behalf" so look it up before!
-Example: Get-exoMailbox -RecipientTypeDetails sharedmailbox -Properties GrantSendOnBehalfTo | select alias,GrantSendOnBehalfTo
-
+Also Alias/MailNickname need to be same as samaccountname
+Don't add back send on behalf look it up before!
+Get-exoMailbox -RecipientTypeDetails sharedmailbox -Properties GrantSendOnBehalfTo | select alias,GrantSendOnBehalfTo
 Make sure these values are on all the shared mailboxes that you want to recreate!
 This happens if first migrated as user and then converted to shared mailbox
 msExchRecipientDisplayType	-2147483642
 msExchRecipientTypeDetails	34359738368
 msExchRemoteRecipientType	100
-To update all mailboxes in a specific OU:
-get-aduser -Filter {msExchRemoteRecipientType -eq 4} -SearchBase "OU=Shared Mailboxes,OU=Exchange Resources,OU=Company,DC=Company,DC=com" | `
-set-aduser -Replace @{'msExchRemoteRecipientType'=100;'msExchRecipientDisplayType'=-2147483642;msExchRecipientTypeDetails=34359738368}
+get-aduser -Filter {msExchRemoteRecipientType -eq 4} -SearchBase "OU=Shared Mailboxes,OU=Exchange Resources,OU=Company,DC=Company,DC=com" `
+| set-aduser -Replace @{'msExchRemoteRecipientType'=100;'msExchRecipientDisplayType'=-2147483642;msExchRecipientTypeDetails=34359738368}
+
+
+NEEDED MODULES:
+ExchangeOnlineManagement -- https://www.powershellgallery.com/packages/ExchangeOnlineManagement
+ActiveDirectory
+MSOnline -- https://www.powershellgallery.com/packages/MSOnline

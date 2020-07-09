@@ -7,6 +7,8 @@ Date: 13:37 2020-03-30
 Description:
 Make onprem migrated shared mailbox online only
 
+Thanks to Mike_Choices: https://community.spiceworks.com/how_to/152567-o365-convert-mailbox-from-adconnect-to-cloud
+
 Make sure you connect to Msonline and MSExchangeOnline before running
 You must use the mailbox alias attribute when adding which mailboxes that need to be recreated.
 Also Alias/MailNickname need to be same as samaccountname
@@ -73,7 +75,7 @@ if ($LastDirSyncAge.Minutes -gt 28) {
 }
 #Remove Mailboxes from Sync and store mailboxes-object
 foreach ($User in $Mailboxes) {
-    #Set-aduser $User -Add @{adminDescription = "User_DoNotSync" }
+    Set-aduser $User -Add @{adminDescription = "User_DoNotSync" }
     $OldMailboxes += Get-EXOMailbox $User
     $OldMembers = Get-EXOMailboxPermission $User | Where-Object { $_.user -like '*' + $domain } | Select-Object -Property Identity, user, @{ Name = 'Accessrights'; Expression = { $_.accessrights } }
     $OldMBMembers += $OldMembers

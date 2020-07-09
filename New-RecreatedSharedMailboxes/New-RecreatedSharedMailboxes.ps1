@@ -119,7 +119,7 @@ foreach ($Mailbox in $OldMailboxes) {
 
     Start-Sleep -seconds 60
     #Recreate the inactivemailbox
-    $NewMB = New-Mailbox -InactiveMailbox $ExchGUID -name $OldMBAlias -alias $OldMBAlias -displayname $OldMBDisplayname -MicrosoftOnlineServicesID $OldMBAlias$OnlineDomain 
+    $NewMB = New-Mailbox -InactiveMailbox $ExchGUID -name $OldMBAlias -alias $OldMBAlias -displayname $OldMBDisplayname -MicrosoftOnlineServicesID $OldMBAlias@$OnlineDomain 
 
     Start-Sleep -seconds 60
 

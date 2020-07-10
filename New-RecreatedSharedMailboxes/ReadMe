@@ -13,6 +13,8 @@ msExchRemoteRecipientType	100
 get-aduser -Filter {msExchRemoteRecipientType -eq 4} -SearchBase "OU=Shared Mailboxes,OU=Exchange Resources,OU=Company,DC=Company,DC=com" `
 | set-aduser -Replace @{'msExchRemoteRecipientType'=100;'msExchRecipientDisplayType'=-2147483642;msExchRecipientTypeDetails=34359738368}
 
+Also disable LitigationHold if enabled!
+Set-Mailbox -InactiveMailbox MAILBOX -LitigationHoldEnabled:$false
 
 NEEDED MODULES:
 ExchangeOnlineManagement -- https://www.powershellgallery.com/packages/ExchangeOnlineManagement
